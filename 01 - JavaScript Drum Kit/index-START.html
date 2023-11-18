@@ -1,67 +1,119 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>JS Drum Kit</title>
-  <link rel="stylesheet" href="style.css">
-  <link rel="icon" href="https://fav.farm/🔥" />
-</head>
-<body>
+  <head>
+    <meta charset="UTF-8" />
+    <title>JS Drum Kit</title>
+    <link rel="stylesheet" href="style.css" />
+    <link rel="icon" href="https://fav.farm/🔥" />
+  </head>
+  <body>
+    <div class="keys" sss="sss">
+      <div data-key="65" class="key">
+        <kbd>A</kbd>
+        <span class="sound">clap</span>
+      </div>
+      <div data-key="83" class="key">
+        <kbd>S</kbd>
+        <span class="sound">hihat</span>
+      </div>
+      <div data-key="68" class="key">
+        <kbd>D</kbd>
+        <span class="sound">kick</span>
+      </div>
+      <div data-key="70" class="key">
+        <kbd>F</kbd>
+        <span class="sound">openhat</span>
+      </div>
+      <div data-key="71" class="key">
+        <kbd>G</kbd>
+        <span class="sound">boom</span>
+      </div>
+      <div data-key="72" class="key">
+        <kbd>H</kbd>
+        <span class="sound">ride</span>
+      </div>
+      <div data-key="74" class="key">
+        <kbd>J</kbd>
+        <span class="sound">snare</span>
+      </div>
+      <div data-key="75" class="key">
+        <kbd>K</kbd>
+        <span class="sound">tom</span>
+      </div>
+      <div data-key="76" class="key">
+        <kbd>L</kbd>
+        <span class="sound">tink</span>
+      </div>
+    </div>
 
+    <audio data-key="65" src="sounds/clap.wav"></audio>
+    <audio data-key="83" src="sounds/hihat.wav"></audio>
+    <audio data-key="68" src="sounds/kick.wav"></audio>
+    <audio data-key="70" src="sounds/openhat.wav"></audio>
+    <audio data-key="71" src="sounds/boom.wav"></audio>
+    <audio data-key="72" src="sounds/ride.wav"></audio>
+    <audio data-key="74" src="sounds/snare.wav"></audio>
+    <audio data-key="75" src="sounds/tom.wav"></audio>
+    <audio data-key="76" src="sounds/tink.wav"></audio>
 
-  <div class="keys">
-    <div data-key="65" class="key">
-      <kbd>A</kbd>
-      <span class="sound">clap</span>
-    </div>
-    <div data-key="83" class="key">
-      <kbd>S</kbd>
-      <span class="sound">hihat</span>
-    </div>
-    <div data-key="68" class="key">
-      <kbd>D</kbd>
-      <span class="sound">kick</span>
-    </div>
-    <div data-key="70" class="key">
-      <kbd>F</kbd>
-      <span class="sound">openhat</span>
-    </div>
-    <div data-key="71" class="key">
-      <kbd>G</kbd>
-      <span class="sound">boom</span>
-    </div>
-    <div data-key="72" class="key">
-      <kbd>H</kbd>
-      <span class="sound">ride</span>
-    </div>
-    <div data-key="74" class="key">
-      <kbd>J</kbd>
-      <span class="sound">snare</span>
-    </div>
-    <div data-key="75" class="key">
-      <kbd>K</kbd>
-      <span class="sound">tom</span>
-    </div>
-    <div data-key="76" class="key">
-      <kbd>L</kbd>
-      <span class="sound">tink</span>
-    </div>
-  </div>
+    <script>
+      <!-- 常用事件 -->
+      // click: 用户点击了鼠标左键
+      // dblclick: 用户双击了鼠标左键
+      // mousedown: 用户按下了鼠标按钮
+      // mouseup: 用户释放了鼠标按钮
+      // mousemove: 用户移动了鼠标
+      // mouseover: 用户将鼠标移动到元素上
+      // mouseout: 用户将鼠标从元素上移开
+      // keydown: 用户按下了键盘的键
+      // keyup: 用户释放了键盘的键
+      // keypress: 用户按下并释放了键盘的键
+      // load: 页面已完成加载
+      // unload: 页面正在卸载（通常在关闭页面时）
+      // focus: 元素获得焦点
+      // blur: 元素失去焦点
+      // change: 表单元素的值已改变
+      // submit: 表单已提交
+      // reset: 表单已重置
+      // resize: 窗口或框架已调整大小
+      // scroll: 用户滚动或平移了元素或页面
 
-  <audio data-key="65" src="sounds/clap.wav"></audio>
-  <audio data-key="83" src="sounds/hihat.wav"></audio>
-  <audio data-key="68" src="sounds/kick.wav"></audio>
-  <audio data-key="70" src="sounds/openhat.wav"></audio>
-  <audio data-key="71" src="sounds/boom.wav"></audio>
-  <audio data-key="72" src="sounds/ride.wav"></audio>
-  <audio data-key="74" src="sounds/snare.wav"></audio>
-  <audio data-key="75" src="sounds/tom.wav"></audio>
-  <audio data-key="76" src="sounds/tink.wav"></audio>
+      function playSound(e) {
+        const audio = document.querySelector(`audio[data-key="${e.keyCode}"]`);
+        const key = document.querySelector(`.key[data-key="${e.keyCode}"]`);
+        if (!audio) return;
+        audio.currentTime = 0;
+        key.classList.add("playing");
+        audio.play();
+      }
 
-<script>
+      // 方法一:每个key都添加一个事件监听器
+      // function removeTransition(e) {
+      //   if (e.propertyName !== "transform") return;
+      //   this.classList.remove("playing");
+      // }
+      // const keys = document.querySelectorAll(".key");
+      // keys.forEach((key) =>
+      //   key.addEventListener("transitionend", removeTransition)
+      // );
 
-</script>
-
-
-</body>
+      //方法二:添加一个事件监听器到keys上,然后判断e.target是否为key
+      function removeTransition(e) {
+        if (e.propertyName !== "transform") return;
+        if (e.target.classList.contains("playing"))
+          e.target.classList.remove("playing");
+      }
+      
+      const keys = document.querySelector(".keys");
+      keys.addEventListener("transitionend", removeTransition);
+      window.addEventListener("keydown", playSound);
+      // playSound函数在用户按下键盘键时被调用。它首先使用querySelector方法找到与按下的键对应的audio元素和.key元素。
+      // 如果没有找到对应的audio元素，函数就会返回。然后，它将audio元素的currentTime属性设置为0，这样每次按键时都会
+      // 从头开始播放声音。最后，它给.key元素添加playing类，并播放声音。
+      // removeTransition函数在.key元素的CSS过渡结束时被调用。如果过渡的属性名不是transform，函数就会返回。
+      //否则，它会从.key元素上移除playing类。
+      // 在代码的最后，addEventListener方法被用于添加事件监听器。对于每一个.key元素，当CSS过渡结束时，
+      //removeTransition函数会被调用。当用户按下键盘键时，playSound函数会被调用。
+    </script>
+  </body>
 </html>
