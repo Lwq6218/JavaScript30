@@ -1,57 +1,111 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>JS Reference VS Copy</title>
-  <link rel="icon" href="https://fav.farm/🔥" />
-</head>
-<body>
+  <head>
+    <meta charset="UTF-8" />
+    <title>JS Reference VS Copy</title>
+    <link rel="icon" href="https://fav.farm/🔥" />
+  </head>
+  <body>
+    <script>
+      // start with strings, numbers and booleans
+      let age = 100;
+      let age2 = age;
+      age = 200;
+      console.log(age, age2);
 
-  <script>
-    // start with strings, numbers and booleans
+      // Let's say we have an array
+      const players = ["Wes", "Sarah", "Ryan", "Poppy"];
+      const team = players;
+      console.log(players, team);
+      // team[3] = "Lux";
+      // console.log(players, team);
 
-    // Let's say we have an array
-    const players = ['Wes', 'Sarah', 'Ryan', 'Poppy'];
+      // and we want to make a copy of it.
 
-    // and we want to make a copy of it.
+      // You might think we can just do something like this:
 
-    // You might think we can just do something like this:
+      // however what happens when we update that array?
 
-    // however what happens when we update that array?
+      // now here is the problem!
 
-    // now here is the problem!
+      // oh no - we have edited the original array too!
 
-    // oh no - we have edited the original array too!
+      // Why? It's because that is an array reference, not an array copy. They both point to the same array!
 
-    // Why? It's because that is an array reference, not an array copy. They both point to the same array!
+      // So, how do we fix this? We take a copy instead!
 
-    // So, how do we fix this? We take a copy instead!
+      // one way
+      //slice() 方法可从已有的数组中返回选定的元素。
+      const team2 = players.slice();
+      team2[3] = "team2";
+      console.log(team2);
+      // or create a new array and concat the old one in
+      //concat() 方法用于连接两个或多个数组。
+      const team3 = [].concat(players);
+      team3[3] = "team3";
+      console.log(team3);
+      // or use the new ES6 Spread
+      //ES6 Spread
+      const team4 = [...players];
+      team4[3] = "team4";
+      console.log(team4);
 
-    // one way
+      //Array.from() 方法从一个类似数组或可迭代对象创建一个新的，浅拷贝的数组实例。
+      const team5 = Array.from(players);
+      team5[3] = "team5";
+      console.log(team5);
+      // now when we update it, the original one isn't changed
 
-    // or create a new array and concat the old one in
+      // The same thing goes for objects, let's say we have a person object
 
-    // or use the new ES6 Spread
+      // with Objects
+      const person = {
+        name: "Wes Bos",
+        age: 80,
+      };
 
-    // now when we update it, the original one isn't changed
+      // and think we make a copy:
+      const captain = person;
+      captain.number = 99;
+      console.log(person, captain);
+      // how do we take a copy instead?
+      // Object.assign() 方法用于将所有可枚举属性的值从一个或多个源对象复制到目标对象。它将返回目标对象。
+      const cap2 = Object.assign({}, person, { number: 99, age: 12 });
+      console.log(cap2);
+      // We will hopefully soon see the object ...spread
+      const cap3 = { ...person };
+      console.log(cap3);
+      // Things to note - this is only 1 level deep - both for Arrays and Objects. lodash has a cloneDeep method, but you should think twice before using it.
+      const lwq = {
+        name: "lwq",
+        age: 23,
+        social: {
+          wechat: "@lwq",
+          qq: "lwq.developer",
+        },
+      };
+      console.clear();
+      const dev = Object.assign({}, lwq);
+      dev.social.wechat = "@lwq2";
+      console.log(dev, lwq);
 
-    // The same thing goes for objects, let's say we have a person object
+      console.log(JSON.stringify(lwq));
+      //   JSON.parse() 方法用于将一个 JSON 字符串转换为对象。有坑
+      const dev2 = JSON.parse(JSON.stringify(lwq));
+      dev2.social.wechat = "@lwq3";
+      console.log(dev2, lwq);
 
-    // with Objects
-    const person = {
-      name: 'Wes Bos',
-      age: 80
-    };
-
-    // and think we make a copy:
-
-    // how do we take a copy instead?
-
-    // We will hopefully soon see the object ...spread
-
-    // Things to note - this is only 1 level deep - both for Arrays and Objects. lodash has a cloneDeep method, but you should think twice before using it.
-
-  </script>
-
-</body>
+      // 递归深拷贝
+      function deepCopy(obj) {
+        let copy = Array.isArray(obj) ? [] : {};
+        for (let i in obj) {
+          //hasOwnProperty() 是 JavaScript 中的一个方法，用于检查一个对象是否具有特定的自身属性
+          //（也就是，不包括那些从原型链上继承下来的属性）。
+          if (obj.hasOwnProperty(i)) {
+            copy[i] = typeof obj[i] === "object" ? deepCopy(obj[i]) : obj[i];
+          }
+        }
+      }
+    </script>
+  </body>
 </html>
