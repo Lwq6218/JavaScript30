@@ -183,6 +183,29 @@
     </li>
   </ul>
 <script>
+  const timeNodes = Array.from(document.querySelectorAll('li[data-time]'));
+  const seconds = timeNodes.map(node => node.dataset.time)
+  //parseFloat 是 JavaScript 的一个内置函数，
+  //用于将一个字符串转换为浮点数（即，有小数点的数）。
+  .map(timeCode => {
+    const [mins, secs] = timeCode.split(':').map(parseFloat);
+    return mins * 60 + secs;
+  })
+  //reduce() 方法接收一个函数作为累加器（accumulator），
+  //数组中的每个值（从左到右）开始缩减，最终为一个值。
+  //arr.reduce(callback(accumulator, currentValue[, index[, array]])[, initialValue])
+  //如果不写初始值，数组为空的时候会报错
+  .reduce((total, vidSeconds) => total + vidSeconds,0)
+
+  let secondsLeft = seconds;
+  //Math.floor() 返回小于或等于一个给定数字的最大整数。
+  //Math.ceil() 返回大于或等于一个给定数字的最小整数。
+  const hours = Math.floor(secondsLeft / 3600);
+  secondsLeft = secondsLeft % 3600;
+  const mins = Math.floor(secondsLeft / 60);
+  secondsLeft = secondsLeft % 60;
+  console.log(hours, mins, secondsLeft);
+  console.log(timeNodes);
 </script>
 </body>
 </html>
