@@ -1,21 +1,48 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Video Speed Scrubber</title>
-  <link rel="stylesheet" href="style.css">
-  <link rel="icon" href="https://fav.farm/🔥" />
-</head>
-<body>
-
-  <div class="wrapper">
-    <video class="flex" width="765" height="430" src="http://clips.vorwaerts-gmbh.de/VfE_html5.mp4" loop controls></video>
-    <div class="speed">
-      <div class="speed-bar">1×</div>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Video Speed Scrubber</title>
+    <link rel="stylesheet" href="style.css" />
+    <link rel="icon" href="https://fav.farm/🔥" />
+  </head>
+  <body>
+    <div class="wrapper">
+      <video
+        class="flex"
+        width="765"
+        height="430"
+        src="http://clips.vorwaerts-gmbh.de/VfE_html5.mp4"
+        loop
+        controls
+      ></video>
+      <div class="speed">
+        <div class="speed-bar">1×</div>
+      </div>
     </div>
-  </div>
-
-<script>
-</script>
-</body>
+    <script>
+      const speed = document.querySelector(".speed");
+      const bar = speed.querySelector(".speed-bar");
+      const video = document.querySelector(".flex");
+      function handleMove(e) {
+        //获取鼠标在speed上的相对位置
+        const Y = e.pageY - this.offsetTop;
+        //获取鼠标在speed上的相对位置占speed的高度的百分比
+        const percent = Y / this.offsetHeight;
+        //Math.round() 方法可把一个数字舍入为最接近的整数。
+        const height = Math.round(percent * 100) + "%";
+        //设置播放速度的最小值和最大值
+        const min = 0.4;
+        const max = 4;
+        //当percent为0时，playbackRate为0.4，当percent为1时，playbackRate为4，取值范围为0.4-4
+        const playbackRate = percent * (max - min) + min;
+        bar.style.height = height;
+        //toFixed() 方法可把 Number 四舍五入为指定小数位数的数字。
+        bar.textContent = playbackRate.toFixed(2) + "×";
+        //通过video.playbackRate属性设置或返回音频/视频的当前播放速度。1.0为正常速度，0.5为一半速度，2.0为两倍速度。
+        video.playbackRate = playbackRate;
+      }
+      speed.addEventListener("mousemove", handleMove);
+    </script>
+  </body>
 </html>
